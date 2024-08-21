@@ -1,0 +1,2 @@
+String bgimage = 'https://w0.peakpx.com/wallpaper/1019/567/HD-wallpaper-white-3d-polygons-background-geometric-abstraction-white-background-3d-honeycomb-white-honeycomb-background.jpg';
+const String logoimage = 'logo.png"';

@@ -1,8 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:portfolio/repositry/firebaseserivce.dart';
+import 'package:portfolio/utils/image.dart';
+import 'package:portfolio/utils/strings.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
+import '../utils/values.dart';
 
+String releasePath = kDebugMode ? 'https://c1.wallpaperflare.com/preview/427/745/192/notebook-natural-laptop-macbook.jpg' : 'assest/logo.png';
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
@@ -16,51 +27,70 @@ class _LandingPageState extends State<LandingPage> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading:Center(child: Text(" Madhu Co.",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24),)),
-        leadingWidth: 200,
-        backgroundColor: Colors.white,
-        actions: [
-          TextButton(onPressed: (){}, child: Text("HOME",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w400),)),
-          TextButton(onPressed: (){}, child: Text("ABOUT",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w400),)),
-          TextButton(onPressed: (){}, child: Text("CONTACT",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w400),)),
-          TextButton(onPressed: (){}, child: Text("GITHUB",style: TextStyle(color: Colors.black,fontSize: 18,fontWeight: FontWeight.w400),)),
-        ],
-      ),
-      body: Container(
-        height: 800,
+    print(width);
+    print(height);
+    return  Container(
+        height: 550,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("bg3.jpg"),
+            image: NetworkImage(bgimage),
             fit: BoxFit.fill,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+
+child:
+          Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 380,
-              width: 450,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      Text("I'm Pentakota Madhu", style: TextStyle(fontSize:42,color:Colors.black,fontWeight: FontWeight.bold)),
-                      Text('Software Developer',style: TextStyle(fontSize:18,color:Colors.black ,fontWeight: FontWeight.normal)),
-                    ],
-                ),
+            Container(
+              height:500,
+              width: thiridwidth,
+              child:  Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children:  [
+                    Text("Hello, I am ", style: TextStyle(fontSize:42,color:Colors.black ,fontWeight: FontWeight.w400)),
+                    Text("Madhu sudhan ",maxLines: 2, style: TextStyle(fontSize:60,color:Colors.black ,fontWeight: FontWeight.bold)),
+                    // Text('Software Developer  |  Android Developer',style: TextStyle(fontSize:18,color:Colors.black ,fontWeight: FontWeight.w500)),
+                    SizedBox(
+                      height: 24,
+                      child: DefaultTextStyle(
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontFamily: 'Vertical',
+                          fontWeight: FontWeight.bold
+                        ),
+                        child: AnimatedTextKit(
+                          repeatForever: true,
+                          animatedTexts: [
+                            RotateAnimatedText('WEB DEVELOPER | FULL STACK'),
+                            RotateAnimatedText('PYTHON DEVELOPER | DJANGO'),
+                            RotateAnimatedText('ANDROID DEVELOPER | FLUTTER'),
+                          ],
+                          onTap: () {
+                            print("Tap Event");
+                          },
+                        ),
+                      ),
+                    ),
+
+
+
+                    Text(content,
+                        style: TextStyle(fontSize:width<800?12:18,color:Colors.black ,fontWeight: FontWeight.normal)),
+                  ],
               )
 
               // color: isHover?Colors.teal:Colors.blue,
             ),
             InkWell(
               onTap: (){
+                print("object");
+                downloadImage("assets/logo.png");
               },
               onHover: (value){
                 setState(() {
@@ -69,23 +99,23 @@ class _LandingPageState extends State<LandingPage> {
                 });
               },
             child: isHover?Container(
-              height: 450,
-              width: 450,
+              height: width<800?300:450,
+              width: width<800?300:450,
               decoration:BoxDecoration(
                 color: Colors.black,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.black,width: 2),
                   boxShadow: [
-                    BoxShadow(blurRadius: 5,spreadRadius: 5,color: Colors.grey)
+                    BoxShadow(blurRadius: 5,spreadRadius: 5,color: Colors.teal  )
                   ],
-                  image:  DecorationImage(image: AssetImage('logo.png'),scale: 1,fit: BoxFit.fill,opacity: 0.45)
+                  image:  DecorationImage(image: AssetImage('assets/logo.png'),scale: 1,fit: BoxFit.fill,opacity: 0.3)
               ),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                    IconButton(onPressed: _launchURLApp, icon: Icon(Icons.g_mobiledata,color: Colors.white,size: 36,),),
+                    // IconButton(onPressed: _launchURLApp, icon: Icon(AntDesign.github_fill,color: Colors.white,size: 36,),),
                     IconButton(onPressed:() async {
                     var url = Uri.parse("https://github.com/pentakotamadhusudhan");
                     if (await canLaunchUrl(url)) {
@@ -93,7 +123,8 @@ class _LandingPageState extends State<LandingPage> {
                     } else {
                     throw 'Could not launch $url';
                     }
-                    }, icon: Icon(Icons.install_desktop,color: Colors.white,size: 36,),),
+                    }, icon: Icon(AntDesign.github_fill,color: Colors.white,size: 36,),),
+
                     IconButton(onPressed: () async {
                       var url = Uri.parse("https://www.facebook.com/profile.php?id=100084044290872");
                       if (await canLaunchUrl(url)) {
@@ -101,39 +132,41 @@ class _LandingPageState extends State<LandingPage> {
                       } else {
                         throw 'Could not launch $url';
                       }
-                    }, icon: Icon(Icons.facebook,color: Colors.white,size: 36,),),
+                    }, icon: Icon(AntDesign.facebook_fill,color: Colors.white,size: 36,),),
+
                     IconButton(onPressed: () async {
-                      var url = Uri.parse("'https://www.linkedin.com/in/m-a-d-h-u/'");
+                      var url = Uri.parse("https://www.linkedin.com/in/m-a-d-h-u/");
                       if (await canLaunchUrl(url)) {
                         await launchUrl(url);
                       } else {
                         throw 'Could not launch $url';
                       }
-                    }, icon: Icon(Icons.face,color: Colors.white,size: 36,)),
+                    }, icon: Icon(AntDesign.linkedin_fill,color: Colors.white,size: 36,)),
 
                   ],),
                   Container(
-                    height: 80,
+                    height: 60,
                     width: 400,
                     color: Colors.white,
-                    child: Center(child: Text("  Madhu Sudhan\nSoftware developer",style: TextStyle(fontWeight: FontWeight.w300),),),
+                    child: Center(child: Text("  Madhu Sudhan\nSoftware developer",style: TextStyle(fontWeight: FontWeight.bold),),),
                   )
                 ],
-              ).animate().moveY(begin: 350,end: 280 )
+              ).animate().moveY(begin: 330,end: 260,duration: Duration(milliseconds: 100) )
             ):Container(
-              height: 450,
-              width: 450,
+              height: width<800?300:450,
+              width: width<800?300:450,
               decoration:BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.black,width: 2),
                   // shape: BoxShape.circle,
-                  image: const DecorationImage(image: AssetImage('logo.png'),scale: 1,fit: BoxFit.fill,)
+                  image: const DecorationImage(image: AssetImage('assets/logo.png'),scale: 1,fit: BoxFit.fill,opacity: 0.2)
               ),
             )
           ),
 
-        ],),
-      ),
+        ],)
+        // ],
+
     );
   }
 }

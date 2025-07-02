@@ -34,6 +34,19 @@
   <script type="text/javascript">
     window.flutterWebRenderer = "html";
 </script>
+<!-- Load the main Flutter JS bundle -->
+<script src="flutter.js" defer></script>
+
+<script>
+  window.addEventListener('load', function(ev) {
+    _flutter.loader.load({
+      serviceWorker: {
+        serviceWorkerVersion: '{{flutter_service_worker_version}}',
+      }
+    });
+  });
+</script>
+
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
